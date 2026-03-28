@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CodeGenAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+   
+    <!-- Prism CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css" rel="stylesheet" />
+</head>
+<!-- Prism JS -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+
+<!-- Load languages -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-c.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-cpp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-java.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+<body>
+
+<div class="top-bar">
+     <div class="logo">
+    <span>CodeGenie AI</span>
+     </div>
+     <div class="user-profile" onclick="toggleDropdown()">
+    <div class="user-circle">
+        {{ username[0] | upper }}
+    </div>
+    <span class="username-text">
+        {{ username | capitalize }}
+    </span>
+
+    <div id="dropdownMenu" class="dropdown-menu">
+        <a href="/dashboard/{{username}}">Dashboard</a>
+        <a href="/history/{{username}}">History</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+    
+</div>
+
+    <div>
+        {{ username }}
+        {% if selected_language %}
+            ({{ selected_language }})
+        {% endif %}
+        |
+      
+    </div>
+</div>
+
+<div class="main-container">
+
+    <!-- LANGUAGE BUTTONS -->
+    <div class="language-grid">
+
+       {% set icons = {
+    'python': 'devicon-python-plain colored',
+    'javascript': 'devicon-javascript-plain colored',
+    'java': 'devicon-java-plain colored',
+    'c': 'devicon-c-plain colored',
+    'cpp': 'devicon-cplusplus-plain colored',
+    'go': 'devicon-go-plain colored',
+    'rust': 'devicon-rust-plain colored',
+    'php': 'devicon-php-plain colored'
+} %}
+
+{% for lang in ['python','javascript','java','c','cpp','go','rust','php'] %}
+<form method="POST" action="/generate/{{ username }}">
+    <input type="hidden" name="language" value="{{ lang }}">
+    <button class="lang-btn">
+        <i class="{{ icons[lang] }}"></i>
+        {{ lang|capitalize }}
+    </button>
+</form>
+{% endfor %}
+
+    </div>
+
+    <!-- INPUT -->
+    <div class="input-section">
+
+        <h3>Code Input —
+            {% if selected_language %}
+                {{ selected_language }}
+            {% else %}
+                Select Language
+            {% endif %}
+        </h3>
+
+        <form method="POST" action="/generate/{{ username }}">
+            <input type="hidden" name="language"
+                   value="{{ selected_language if selected_language else 'python' }}">
+
+            <textarea name="prompt"
+                      placeholder="Describe code problem here..."
+                      required></textarea>
+
+            <button class="generate-btn">Generate</button>
+        </form>
+
+    </div>
+
+
+    {% if code %}
+    
+<div class="output-section">
+
+    <div class="code-header">
+        <h3>Generated Code</h3>
+        <button class="copy-btn" onclick="copyCode()">Copy</button>
+    </div>
+
+    <pre class="code-box" id="generatedCode">
+<code class="language-{{ selected_language }}">
+{{ code }}
+</code>
+    </pre>
+
+
+
+        <h2> Explanation</h2>
+         <div class="explanation-box" style="white-space: pre-line;">
+             {{ explanation }}
+</div>
+        
+
+        <h3>Example Usage</h3>
+        <div class="example-container">
+            <pre>{{ example }}
+        </pre>
+
+    </div>
+    {% endif %}
+<h3>Feedback</h3>
+
+<form action="/feedback/{{username}}" method="POST">
+<input type="hidden"  name="prompt" value="{{prompt}}">
+
+<textarea name="message"
+ placeholder="Write your feedback here..." required
+style="width:100%; height:80px;"></textarea>
+
+<br><br>
+
+<button type="submit">Submit Feedback</button>
+
+</form>
+</div>
+<script>
+function copyCode() {
+    const codeText = document.getElementById("generatedCode").innerText;
+
+    navigator.clipboard.writeText(codeText).then(() => {
+        const btn = document.querySelector(".copy-btn");
+        btn.innerText = "Copied!";
+        btn.style.background = "#28a745";
+
+        setTimeout(() => {
+            btn.innerText = "Copy";
+            btn.style.background = "#0077ff";
+        }, 2000);
+    });
+}
+</script>
+<script>
+function toggleDropdown() {
+    document.getElementById("dropdownMenu").classList.toggle("show");
+}
+
+// Close dropdown if clicked outside
+window.onclick = function(event) {
+    if (!event.target.closest('.user-profile')) {
+        var dropdown = document.getElementById("dropdownMenu");
+        if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+        }
+    }
+}
+</script>
+</body>
+</html>

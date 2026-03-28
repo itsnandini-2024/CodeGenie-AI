@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>User Details</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f6f9;
+    padding:30px;
+}
+
+/* container */
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+/* card design */
+.card{
+    background:white;
+    padding:20px;
+    margin-bottom:25px;
+    border-radius:10px;
+    box-shadow:0 3px 12px rgba(0,0,0,0.1);
+}
+
+/* headings */
+h2{
+    margin:0;
+    color:#1e293b;
+}
+
+/* back button */
+.back-btn{
+    display:inline-block;
+    margin-bottom:20px;
+    padding:10px 15px;
+    background:#6366f1;
+    color:white;
+    border-radius:6px;
+    text-decoration:none;
+}
+
+.back-btn:hover{
+    background:#4f46e5;
+}
+
+/* tables */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#6366f1;
+    color:white;
+    padding:10px;
+}
+
+td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+}
+
+/* row hover */
+tr:hover{
+    background:#f1f5f9;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<a href="/admin/dashboard" class="back-btn">← Back to Dashboard</a>
+
+<div class="card">
+<h2>User Details : {{username}}</h2>
+</div>
+
+
+<div class="card">
+
+<h3>Prompt History</h3>
+
+<table>
+
+<tr>
+<th>Language</th>
+<th>Prompt</th>
+<th>Date</th>
+</tr>
+
+{% for row in history %}
+
+<tr>
+<td>{{row[0]}}</td>
+<td>{{row[1]}}</td>
+<td>{{row[2]}}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+
+<div class="card">
+
+<h3>User Feedback</h3>
+
+<table>
+
+<tr>
+<th>Prompt</th>
+<th>Feedback</th>
+</tr>
+
+{% for fb in feedbacks %}
+
+<tr>
+<td>{{fb[0]}}</td>
+<td>{{fb[1]}}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>

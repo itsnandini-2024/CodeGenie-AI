@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body">
+
+<div class="dashboard-container">
+    <h2>Dashboard - {{ username }}</h2>
+
+    <div class="card">
+        <h3>Total Prompts Generated</h3>
+        <p>{{ total }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Most Used Language</h3>
+        <p>{{ most_used }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Last Activity</h3>
+        <p>{{ last_activity }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Language Usage</h3>
+        <ul>
+            {% for lang, count in language_stats %}
+                <li>{{ lang }} — {{ count }} times</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <br>
+    <a href="/home/{{username}}">⬅ Back to Home</a>
+</div>
+
+</body>
+</html>

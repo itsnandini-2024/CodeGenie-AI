@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h1>{{ username }}'s History</h1>
+
+{% for record in records %}
+<div class="history-card">
+    <p><strong>Language:</strong> {{ record[0] }}</p>
+    <p><strong>Prompt:</strong> {{ record[1] }}</p>
+    <p><strong>Date:</strong> {{ record[5] }}</p>
+
+    <h3>Code</h3>
+    <pre><code>{{ record[2] }}</code></pre>
+
+    <h3>Explanation</h3>
+    <pre>{{ record[3] }}</pre>
+
+    <h3>Example</h3>
+    <pre>{{ record[4] }}</pre>
+</div>
+{% endfor %}
+
+</body>
+</html>
